@@ -34,35 +34,7 @@ export default {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
-      typography: (theme) => ({
-        DEFAULT: {
-          css: {
-            color: theme('colors.slate.200'),
-            a: {
-              color: theme('colors.emerald.400'),
-              '&:hover': {
-                color: theme('colors.emerald.300'),
-              },
-            },
-            h1: { color: theme('colors.slate.100') },
-            h2: { color: theme('colors.slate.100') },
-            h3: { color: theme('colors.slate.100') },
-            h4: { color: theme('colors.slate.100') },
-            strong: { color: theme('colors.emerald.300') },
-            code: { color: theme('colors.emerald.200'), backgroundColor: theme('colors.slate.800'), padding: '2px 4px', borderRadius: '4px', fontWeight: '500' },
-            'code::before': { content: '""' },
-            'code::after': { content: '""' },
-            pre: { backgroundColor: theme('colors.slate.900') },
-            blockquote: { borderLeftColor: theme('colors.emerald.500'), color: theme('colors.slate.300') },
-            hr: { borderColor: theme('colors.slate.700') },
-            'ul > li::marker': { color: theme('colors.emerald.500') },
-            'ol > li::marker': { color: theme('colors.emerald.500') },
-          },
-        },
-      }),
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [],
 }
