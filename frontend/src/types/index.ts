@@ -44,7 +44,7 @@ export interface HealthResponse {
   status: string;
   app: string;
   ais_edge_computing: boolean;
-  ollama_online: boolean;
+  typhoon_online: boolean;
   model: string;
 }
 

@@ -3,7 +3,7 @@
 // ============================================================
 
 import type { RoleType } from '../types';
-import { useOllamaStatus } from '../hooks/useOllamaStatus';
+import { useTyphoonStatus } from '../hooks/useTyphoonStatus';
 
 interface HeaderProps {
   role: RoleType;
@@ -13,7 +13,7 @@ interface HeaderProps {
 }
 
 export function Header({ role, onRoleChange, onLoginClick, currentUserName }: HeaderProps) {
-  const { isOnline, isChecking } = useOllamaStatus();
+  const { isOnline, isChecking } = useTyphoonStatus();
 
   return (
     <header style={{
@@ -67,7 +67,7 @@ export function Header({ role, onRoleChange, onLoginClick, currentUserName }: He
               {isOnline ? (
                 <>
                   <span className="pulse-dot" />
-                  <span style={{ color: '#00E676', fontWeight: 500 }}>AIS 5G Edge AI (Ollama Gemma 2 Active)</span>
+                  <span style={{ color: '#00E676', fontWeight: 500 }}>OpenTyphoon Cloud API (Typhoon v2.5 Active)</span>
                 </>
               ) : (
                 <>

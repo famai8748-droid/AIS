@@ -18,7 +18,7 @@ export function AISPitchSection() {
       iconBorder: 'rgba(0,229,255,0.4)',
       titleColor: '#00E5FF',
       title: '2. AIS 5G & Local Edge Computing',
-      desc: 'รันโมเดล AI (Ollama Local LLM) แบบ Edge Server ในโรงเรียนผ่าน AIS 5G หน่วงต่ำ (Low Latency) ปลอดภัยตามกฎหมาย PDPA ข้อมูลนักเรียนไม่รั่วไหลออกภายนอก',
+      desc: 'รันโมเดล AI (Typhoon AI) แบบ Cloud Server ในโรงเรียนผ่าน AIS 5G หน่วงต่ำ (Low Latency) ปลอดภัยตามกฎหมาย PDPA ข้อมูลนักเรียนไม่รั่วไหลออกภายนอก',
     },
   ];
 

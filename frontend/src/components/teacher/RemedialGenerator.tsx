@@ -5,7 +5,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import { api } from '../../api/client';
-import { formatMarkdown } from '../../utils/markdown';
+import { MarkdownRenderer } from '../MarkdownRenderer';
 
 interface RemedialGeneratorProps {
   initialTopic?: string;
@@ -68,7 +68,7 @@ export function RemedialGenerator({ initialTopic, initialWeakness }: RemedialGen
           padding: '4px 12px', background: 'rgba(0,229,255,0.1)', color: '#00E5FF',
           fontSize: '12px', fontWeight: 600, borderRadius: '9999px', border: '1px solid rgba(0,229,255,0.3)',
         }}>
-          Powered by Ollama / Edge AI
+          Powered by Typhoon / Cloud AI
         </span>
       </div>
 
@@ -147,12 +147,7 @@ export function RemedialGenerator({ initialTopic, initialWeakness }: RemedialGen
             </div>
           )}
 
-          <div
-            id="remedial-output-text"
-            className="markdown-body whitespace-pre-line"
-            style={{ color: '#E2E8F0', fontSize: '14px', lineHeight: 1.7 }}
-            dangerouslySetInnerHTML={{ __html: formatMarkdown(result.content) }}
-          />
+          <MarkdownRenderer content={result.content} />
         </div>
       )}
     </div>

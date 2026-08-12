@@ -8,7 +8,7 @@ import { HeroBanner } from './components/HeroBanner';
 import { AuthModal } from './components/AuthModal';
 import { TeacherPortal } from './components/teacher/TeacherPortal';
 import { StudentPortal } from './components/student/StudentPortal';
-import { OllamaChat } from './components/OllamaChat';
+import { TyphoonChat } from './components/TyphoonChat';
 import { AISPitchSection } from './components/AISPitchSection';
 import type { RoleType, UserInfo } from './types';
 
@@ -36,7 +36,7 @@ function App() {
       <main style={{ flex: 1, maxWidth: '80rem', width: '100%', margin: '0 auto', padding: '24px 32px' }}>
         <HeroBanner />
         {role === 'teacher' ? <TeacherPortal /> : <StudentPortal />}
-        <OllamaChat />
+        <TyphoonChat />
         <AISPitchSection />
       </main>
 

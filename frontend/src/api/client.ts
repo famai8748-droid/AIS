@@ -58,9 +58,9 @@ export const api = {
   /** GET /api/student/free-hub */
   freeHub: () => request<CourseItem[]>('/student/free-hub'),
 
-  /** POST /api/chat/ollama */
-  chatOllama: (message: string) =>
-    request<ChatResponse>('/chat/ollama', {
+  /** POST /api/chat/typhoon */
+  chatTyphoon: (message: string) =>
+    request<ChatResponse>('/chat/typhoon', {
       method: 'POST',
       body: JSON.stringify({ message }),
     }),

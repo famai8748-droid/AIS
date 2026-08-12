@@ -7,7 +7,7 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(__file__))
-from ollama_service import ollama_service
+from typhoon_service import typhoon_service, MODEL_NAME
 
 app = FastAPI(
     title="FindSelf Class API",
@@ -49,8 +49,8 @@ async def get_health():
         "status": "online",
         "app": "FindSelf Class",
         "ais_edge_computing": True,
-        "ollama_online": await ollama_service.is_ollama_online(),
-        "model": "gemma2:9b"
+        "typhoon_online": await typhoon_service.is_typhoon_online(),
+        "model": MODEL_NAME
     }
 
 @app.post("/api/auth/ais-verify")
@@ -71,14 +71,14 @@ async def ais_number_verification(req: AISVerifyRequest):
         }
     }
 
-@app.post("/api/chat/ollama")
-async def chat_with_ollama_endpoint(req: ChatRequest):
+@app.post("/api/chat/typhoon")
+async def chat_with_typhoon_endpoint(req: ChatRequest):
     """Async live chat with Ollama Gemma 2 via official ollama Python client"""
     msg = req.message.strip()
     if not msg:
         raise HTTPException(status_code=400, detail="กรุณากรอกข้อความเพื่อสนทนากับ AI")
     
-    result = await ollama_service.chat_with_ollama(msg)
+    result = await typhoon_service.chat_with_typhoon(msg)
     return result
 
 @app.get("/api/teacher/analytics")
@@ -109,7 +109,7 @@ async def get_teacher_analytics():
 
 @app.post("/api/teacher/generate-remedial")
 async def generate_remedial(req: RemedialRequest):
-    result = await ollama_service.generate_remedial_sheet(req.topic, req.weakness_summary)
+    result = await typhoon_service.generate_remedial_sheet(req.topic, req.weakness_summary)
     return result
 
 @app.post("/api/student/self-discovery")
@@ -117,7 +117,7 @@ async def student_self_discovery(req: SelfDiscoveryRequest):
     if not req.interests or len(req.interests.strip()) < 3:
         raise HTTPException(status_code=400, detail="กรุณาระบุความสนใจหรือสิ่งที่ชอบอย่างน้อย 3 ตัวอักษร")
     
-    result = await ollama_service.generate_career_guidance(req.interests)
+    result = await typhoon_service.generate_career_guidance(req.interests)
     return {
         "student_name": req.student_name,
         "interests_input": req.interests,

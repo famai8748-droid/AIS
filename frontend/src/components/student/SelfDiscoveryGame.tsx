@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { api } from '../../api/client';
-import { formatMarkdown } from '../../utils/markdown';
+import { MarkdownRenderer } from '../MarkdownRenderer';
 import type { QuizQuestion } from '../../types';
 
 const QUIZ_QUESTIONS: QuizQuestion[] = [
@@ -219,16 +219,7 @@ export function SelfDiscoveryGame() {
                   🖨️ พิมพ์/เซฟ PDF
                 </button>
               </div>
-              <div
-                id="discovery-result-text"
-                className="markdown-body whitespace-pre-line"
-                style={{
-                  color: '#E2E8F0', fontSize: '14px', lineHeight: 1.7,
-                  padding: '16px', background: 'rgba(15,23,42,0.6)',
-                  borderRadius: '12px', border: '1px solid rgba(255,255,255,0.07)',
-                }}
-                dangerouslySetInnerHTML={{ __html: formatMarkdown(result.content) }}
-              />
+              <MarkdownRenderer content={result.content} />
             </>
           )}
           <button className="btn-outline-ais" style={{ marginTop: '24px', display: 'flex', margin: '24px auto 0' }} onClick={handleReset}>
