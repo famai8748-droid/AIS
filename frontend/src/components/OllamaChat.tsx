@@ -17,7 +17,30 @@ const QUICK_CHIPS = [
 const INITIAL_MESSAGE: ChatMessage = {
   id: 'init',
   role: 'ai',
-  content: 'สวัสดีครับ! ผมคือ <strong>AI ครูผู้ช่วย (Ollama Llama 3.2)</strong> ยินดีตอบทุกข้อสงสัยเรื่องบทเรียน ช่วยโจทย์ฝึกฝน หรือแนะนำการค้นหาตัวตนครับ พิมพ์ถามเข้ามาได้เลยครับ! 😊',
+  content: 'สวัสดีครับ! ผมคือ <strong>AI ครูผู้ช่วย (Ollama Gemma 2)</strong> ยินดีตอบทุกข้อสงสัยเรื่องบทเรียน ช่วยโจทย์ฝึกฝน หรือแนะนำการค้นหาตัวตนครับ พิมพ์ถามเข้ามาได้เลยครับ! 😊',
+};
+
+const TypewriterMessage = ({ content, containerRef, onComplete }: { content: string, containerRef: React.RefObject<HTMLDivElement>, onComplete: () => void }) => {
+  const [displayed, setDisplayed] = useState('');
+  
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      i += 4;
+      setDisplayed(content.slice(0, i));
+      if (containerRef.current) {
+        containerRef.current.scrollTop = containerRef.current.scrollHeight;
+      }
+      if (i >= content.length) {
+        clearInterval(interval);
+        onComplete();
+      }
+    }, 10);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content]);
+
+  return <div className="markdown-body" dangerouslySetInnerHTML={{ __html: formatMarkdown(displayed) }} />;
 };
 
 export function OllamaChat() {
@@ -40,11 +63,11 @@ export function OllamaChat() {
     try {
       const data = await api.chatOllama(text);
       setMessages(prev => prev.map(m =>
-        m.id === loadingMsg.id ? { ...m, content: data.reply, source: data.source, isLoading: false } : m
+        m.id === loadingMsg.id ? { ...m, content: data.reply, source: data.source, isLoading: false, isTyping: true } : m
       ));
     } catch {
       setMessages(prev => prev.map(m =>
-        m.id === loadingMsg.id ? { ...m, content: 'เกิดข้อผิดพลาดในการเชื่อมต่อกับ Ollama API', isLoading: false } : m
+        m.id === loadingMsg.id ? { ...m, content: 'เกิดข้อผิดพลาดในการเชื่อมต่อกับ Ollama API', isLoading: false, isTyping: true } : m
       ));
     } finally {
       setIsSending(false);
@@ -64,7 +87,7 @@ export function OllamaChat() {
             💬
           </div>
           <div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff' }}>สนทนาสดกับ AI ครูผู้ช่วย (Ollama Llama 3.2 Live Chat)</h3>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff' }}>สนทนาสดกับ AI ครูผู้ช่วย (Ollama Gemma 2 Live Chat)</h3>
             <p style={{ fontSize: '12px', color: '#64748B' }}>พิมพ์คำถาม ข้อสงสัยเรื่องการเรียน หรือปรึกษาแนะแนวอาชีพ คุยกับโมเดล AI ในเครื่องได้โดยตรง</p>
           </div>
         </div>
@@ -122,8 +145,8 @@ export function OllamaChat() {
 
             {msg.isLoading ? (
               <div className="chat-bubble-ai" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#00E676' }}>
-                <Loader2 size={12} style={{ animation: 'spin 1s linear infinite' }} />
-                ⚡ Ollama (Llama 3.2) กำลังคิดและพิมพ์ตอบ...
+                <Loader2 size={14} className="animate-spin" />
+                ⚡ Ollama (Gemma 2) กำลังคิดและพิมพ์ตอบ...
               </div>
             ) : msg.role === 'ai' ? (
               <div className="chat-bubble-ai">
@@ -132,7 +155,17 @@ export function OllamaChat() {
                     <span className="pulse-dot" style={{ width: '6px', height: '6px' }} /> {msg.source}
                   </div>
                 )}
-                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: formatMarkdown(msg.content) }} />
+                {msg.isTyping ? (
+                  <TypewriterMessage 
+                    content={msg.content} 
+                    containerRef={historyRef}
+                    onComplete={() => {
+                      setMessages(prev => prev.map(m => m.id === msg.id ? { ...m, isTyping: false } : m));
+                    }}
+                  />
+                ) : (
+                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: formatMarkdown(msg.content) }} />
+                )}
               </div>
             ) : (
               <div className="chat-bubble-user">{msg.content}</div>

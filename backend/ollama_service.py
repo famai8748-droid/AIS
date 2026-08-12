@@ -3,7 +3,7 @@ import os
 import ollama
 
 DATASET_PATH = os.path.join(os.path.dirname(__file__), "..", "career_dataset_th.jsonl")
-MODEL_NAME = "llama3.2"
+MODEL_NAME = "gemma2:9b"
 
 # Async Ollama client
 async_client = ollama.AsyncClient(host="http://localhost:11434")
@@ -57,7 +57,9 @@ class OllamaService:
         system_instruction = (
             "คุณคือ AI ครูผู้ช่วยและที่ปรึกษาการศึกษาในแพลตฟอร์ม FindSelf Class (by AIS) "
             "ให้ตอบคำถามอย่างเป็นกันเอง สุภาพ ให้ความรู้ และช่วยเหลือเรื่องการเรียน การค้นหาตัวตน "
-            "และการแนะแนวอาชีพแก่คุณครูและนักเรียน ตอบเป็นภาษาไทยอ่านง่าย กระชับ"
+            "และการแนะแนวอาชีพแก่คุณครูและนักเรียน "
+            "*** IMPORTANT: Please respond in the SAME language that the user used to ask the question. ***"
+            "ตอบเนื้อหาให้อ่านง่าย กระชับ"
         )
         context = self.find_similar_career_context(user_message, top_k=1)
 
@@ -65,14 +67,14 @@ class OllamaService:
             try:
                 response = await async_client.generate(
                     model=MODEL_NAME,
-                    prompt=f"{system_instruction}\n\n{context}\n\nคำถามจากผู้ใช้: {user_message}\n\nคำตอบ:",
-                    options={"temperature": 0.7, "num_predict": 700}
+                    prompt=f"{system_instruction}\n\n{context}\n\nคำถามจากผู้ใช้: {user_message}\n\n[ข้อบังคับสำคัญ: คุณต้องตอบด้วยภาษาเดียวกับที่ผู้ใช้พิมพ์ถามมา (Answer in the same language as the user's question)]\n\nคำตอบ:",
+                    options={"temperature": 0.95, "num_predict": 700, "top_p": 0.9}
                 )
                 reply = response.response.strip()
                 if reply:
                     return {
                         "status": "success",
-                        "source": "Ollama Llama 3.2 (AIS 5G Edge Server) — async",
+                        "source": "Ollama Gemma 2 (AIS 5G Edge Server) — async",
                         "reply": reply
                     }
             except Exception as e:
@@ -99,17 +101,19 @@ class OllamaService:
 3. 💼 อาชีพในอนาคตที่ควรสำรวจ (3-4 อาชีพ เช่น Data Analyst, UX/UI Designer, AI Engineer เป็นต้น)
 4. 🛠️ ทักษะสำคัญที่ควรเร่งพัฒนา
 5. 🚀 คำแนะนำก้าวถัดไป (Next Steps)
+
+[ข้อบังคับสำคัญ: คุณต้องตอบด้วยภาษาเดียวกับที่ผู้ใช้พิมพ์สนใจมา (Answer in the same language as the user's input)]
 """
         if await self.is_ollama_online():
             try:
                 response = await async_client.generate(
                     model=MODEL_NAME,
                     prompt=prompt,
-                    options={"temperature": 0.7, "num_predict": 850}
+                    options={"temperature": 0.9, "num_predict": 850, "top_p": 0.9}
                 )
                 text = response.response.strip()
                 if text:
-                    return {"status": "success", "source": "Ollama Llama 3.2 (AIS 5G Edge Server) — async", "content": text}
+                    return {"status": "success", "source": "Ollama Gemma 2 (AIS 5G Edge Server) — async", "content": text}
             except Exception as e:
                 print(f"[OllamaService] Async career guidance error: {e}")
 
@@ -125,17 +129,19 @@ class OllamaService:
 1. สรุปเนื้อหาเข้าใจง่ายใน 3 บรรทัด (Concept Summary)
 2. ข้อควรระวังและจุดที่มักเข้าใจผิด (Common Mistakes to Avoid)
 3. โจทย์ฝึกฝนซ่อมแซม 3 ข้อ พร้อมเฉลยละเอียดและคำอธิบาย
+
+[ข้อบังคับสำคัญ: คุณต้องสร้างเนื้อหาด้วยภาษาเดียวกับหัวข้อบทเรียน (Generate content in the same language as the topic)]
 """
         if await self.is_ollama_online():
             try:
                 response = await async_client.generate(
                     model=MODEL_NAME,
                     prompt=prompt,
-                    options={"temperature": 0.5, "num_predict": 900}
+                    options={"temperature": 0.85, "num_predict": 900, "top_p": 0.9}
                 )
                 text = response.response.strip()
                 if text:
-                    return {"status": "success", "source": "Ollama Llama 3.2 (AIS 5G Edge Server) — async", "content": text}
+                    return {"status": "success", "source": "Ollama Gemma 2 (AIS 5G Edge Server) — async", "content": text}
             except Exception as e:
                 print(f"[OllamaService] Async remedial error: {e}")
 

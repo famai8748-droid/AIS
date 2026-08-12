@@ -50,7 +50,7 @@ async def get_health():
         "app": "FindSelf Class",
         "ais_edge_computing": True,
         "ollama_online": await ollama_service.is_ollama_online(),
-        "model": "llama3.2"
+        "model": "gemma2:9b"
     }
 
 @app.post("/api/auth/ais-verify")
@@ -73,7 +73,7 @@ async def ais_number_verification(req: AISVerifyRequest):
 
 @app.post("/api/chat/ollama")
 async def chat_with_ollama_endpoint(req: ChatRequest):
-    """Async live chat with Ollama Llama 3.2 via official ollama Python client"""
+    """Async live chat with Ollama Gemma 2 via official ollama Python client"""
     msg = req.message.strip()
     if not msg:
         raise HTTPException(status_code=400, detail="กรุณากรอกข้อความเพื่อสนทนากับ AI")

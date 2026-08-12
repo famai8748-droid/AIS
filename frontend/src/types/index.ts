@@ -78,6 +78,7 @@ export interface ChatMessage {
   content: string;
   source?: string;
   isLoading?: boolean;
+  isTyping?: boolean;
 }
 
 export interface QuizQuestion {
