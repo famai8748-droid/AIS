@@ -1,0 +1,19 @@
+{
+  "name": "findself-class",
+  "version": "1.0.0",
+  "description": "FindSelf Class (by AIS) - JUMP THAILAND Hackathon 2026",
+  "main": "backend/main.py",
+  "scripts": {
+    "dev": "python backend/main.py",
+    "start": "python backend/main.py"
+  },
+  "keywords": [
+    "ais",
+    "education",
+    "ollama",
+    "fastapi",
+    "hackathon"
+  ],
+  "author": "AIS Hackathon Team",
+  "license": "MIT"
+}
