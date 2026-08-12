@@ -1,0 +1,325 @@
+/* Google Fonts — must be first */
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&family=Prompt:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   FindSelf Class (by AIS) — Design System
+   Port จาก original styles.css + ปรับสำหรับ React/Vite
+   ============================================================ */
+
+/* ── CSS Custom Properties ────────────────────────────── */
+:root {
+  --ais-green: #00E676;
+  --ais-green-dark: #00A352;
+  --ais-glow: rgba(0, 230, 118, 0.35);
+  --cyber-blue: #00E5FF;
+  --bg-dark: #0B1120;
+  --card-bg: rgba(18, 26, 47, 0.75);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text-main: #F1F5F9;
+  --text-muted: #94A3B8;
+}
+
+/* ── Reset & Base ──────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', 'Prompt', 'Inter', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(0, 230, 118, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(0, 229, 255, 0.06) 0%, transparent 45%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 6px; }
+::-webkit-scrollbar-track { background: #0B1120; }
+::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #00E676; }
+
+/* ── Glass Panel ─────────────────────────────────────────── */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(0, 230, 118, 0.3);
+  box-shadow: 0 12px 35px rgba(0, 230, 118, 0.15);
+}
+
+/* ── Glass Pill (status badge) ──────────────────────────── */
+.glass-pill {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  padding: 4px 14px;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-ais {
+  background: linear-gradient(135deg, #00E676 0%, #00B0FF 100%);
+  color: #070D19;
+  font-weight: 700;
+  font-family: 'Kanit', sans-serif;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px var(--ais-glow);
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+}
+
+.btn-ais:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 25px rgba(0, 230, 118, 0.5);
+  filter: brightness(1.1);
+}
+
+.btn-ais:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-ais:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+}
+
+.btn-outline-ais {
+  background: transparent;
+  color: var(--ais-green);
+  border: 1.5px solid var(--ais-green);
+  font-weight: 500;
+  font-family: 'Kanit', sans-serif;
+  border-radius: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+}
+
+.btn-outline-ais:hover {
+  background: rgba(0, 230, 118, 0.12);
+  transform: translateY(-1px);
+}
+
+/* ── Text Gradient ────────────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, #00E676 0%, #00E5FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Role Tabs ────────────────────────────────────────────── */
+.role-tab {
+  padding: 8px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: 'Kanit', sans-serif;
+  transition: all 0.2s ease;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+}
+
+.role-tab.active {
+  background: rgba(0, 230, 118, 0.15);
+  color: #00E676;
+  border: 1px solid rgba(0, 230, 118, 0.4);
+  font-weight: 600;
+}
+
+.role-tab:not(.active):hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* ── Pulse Dot ────────────────────────────────────────────── */
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #00E676;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7);
+  animation: pulse-green 2s infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-green {
+  0%   { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7); }
+  70%  { box-shadow: 0 0 0 8px rgba(0, 230, 118, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+}
+
+/* ── Quiz Mini-Game ────────────────────────────────────────── */
+.quiz-option {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-option:hover {
+  background: rgba(0, 230, 118, 0.1);
+  border-color: rgba(0, 230, 118, 0.4);
+  transform: translateY(-2px);
+}
+
+.quiz-option.selected {
+  background: rgba(0, 230, 118, 0.2);
+  border-color: #00E676;
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.2);
+}
+
+.quiz-option .option-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.quiz-option.selected .option-icon {
+  background: rgba(0, 230, 118, 0.2);
+}
+
+/* ── Progress Bar ─────────────────────────────────────────── */
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00E676, #00E5FF);
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+/* ── Animations ────────────────────────────────────────────── */
+.slide-in {
+  animation: slideIn 0.35s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.fade-in {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Markdown Output ──────────────────────────────────────── */
+.markdown-body h3 {
+  color: #00E676;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.markdown-body strong {
+  color: #6EE7B7;
+  font-weight: 600;
+}
+
+.markdown-body ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-body li {
+  margin-bottom: 0.35rem;
+  color: #E2E8F0;
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid #1E293B;
+  margin: 0.75rem 0;
+}
+
+/* ── Chat Bubbles ─────────────────────────────────────────── */
+.chat-bubble-ai {
+  padding: 12px 14px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  font-size: 0.75rem;
+  color: #E2E8F0;
+  line-height: 1.7;
+  max-width: 42rem;
+}
+
+.chat-bubble-user {
+  padding: 10px 14px;
+  background: rgba(0, 230, 118, 0.15);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  border-radius: 16px;
+  font-size: 0.75rem;
+  color: #D1FAE5;
+  line-height: 1.7;
+  max-width: 36rem;
+}
+
+/* ── Weakness Alert Severity Colors ───────────────────────── */
+.severity-high   { color: #FB7185; background: rgba(251,113,133,0.15); border-color: rgba(251,113,133,0.4); }
+.severity-medium { color: #FCD34D; background: rgba(252,211,77,0.15);  border-color: rgba(252,211,77,0.4); }
+.severity-low    { color: #34D399; background: rgba(52,211,153,0.15);  border-color: rgba(52,211,153,0.4); }
+
+/* ── Utility ───────────────────────────────────────────────── */
+.whitespace-pre-line { white-space: pre-line; }

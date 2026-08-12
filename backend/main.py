@@ -15,9 +15,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Allow Vite dev server (5173) and production origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",   # Vite dev server
+        "http://localhost:8000",   # FastAPI (for direct access)
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:8000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -144,32 +150,24 @@ async def get_free_learning_hub():
         }
     ]
 
-FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
-if os.path.exists(FRONTEND_DIR):
-    css_dir = os.path.join(FRONTEND_DIR, "css")
-    js_dir = os.path.join(FRONTEND_DIR, "js")
-    if os.path.exists(css_dir):
-        app.mount("/css", StaticFiles(directory=css_dir), name="css")
-    if os.path.exists(js_dir):
-        app.mount("/js", StaticFiles(directory=js_dir), name="js")
-    app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+# Frontend is now served by Vite (dev: port 5173, prod: dist/ build)
+# For production: serve the Vite build output from frontend/dist
+FRONTEND_DIST = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
+if os.path.exists(FRONTEND_DIST):
+    app.mount("/assets", StaticFiles(directory=os.path.join(FRONTEND_DIST, "assets")), name="assets")
 
     @app.get("/")
     def serve_frontend_index():
-        index_path = os.path.join(FRONTEND_DIR, "index.html")
+        index_path = os.path.join(FRONTEND_DIST, "index.html")
         if os.path.exists(index_path):
             return FileResponse(index_path)
-        return {"message": "FindSelf Class API Running."}
+        return {"message": "FindSelf Class API is running. Run 'npm run dev' in frontend/ to start the dev server."}
+else:
+    @app.get("/")
+    def api_root():
+        return {"message": "FindSelf Class API Running", "docs": "/docs", "frontend_dev": "http://localhost:5173"}
 
 if __name__ == "__main__":
     import uvicorn
-    import webbrowser
-    import threading
-
-    def open_browser():
-        import time
-        time.sleep(1.5)
-        webbrowser.open("http://localhost:8000")
-
-    threading.Thread(target=open_browser, daemon=True).start()
+    # uvicorn --reload acts as nodemon: auto-restarts on .py file changes
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

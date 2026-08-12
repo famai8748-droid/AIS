@@ -1,19 +1,27 @@
 {
   "name": "findself-class",
-  "version": "1.0.0",
-  "description": "FindSelf Class (by AIS) - JUMP THAILAND Hackathon 2026",
-  "main": "backend/main.py",
+  "version": "2.0.0",
+  "description": "FindSelf Class (by AIS) - JUMP THAILAND Hackathon 2026 | Vite + React + FastAPI",
   "scripts": {
-    "dev": "python backend/main.py",
-    "start": "python backend/main.py"
+    "dev": "concurrently -k -n \"BACKEND,FRONTEND\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "python backend/main.py",
+    "install:all": "cd frontend && npm install"
   },
   "keywords": [
     "ais",
     "education",
     "ollama",
     "fastapi",
+    "react",
+    "vite",
     "hackathon"
   ],
   "author": "AIS Hackathon Team",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
 }
